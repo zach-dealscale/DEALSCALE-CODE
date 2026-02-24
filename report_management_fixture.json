@@ -1,0 +1,566 @@
+{
+    "model": "report_management.reporttemplate",
+    "pk": 3,
+    "fields": {
+        "key": "executive_summary_wrapper",
+        "title": "Executive Summary",
+        "description": "Executive summary",
+        "json_schema": null,
+        "created_at": "2025-08-06T11:18:47.768Z",
+        "is_pinned": false,
+        "last_used": null,
+        "usage_count": 0,
+        "category": 1,
+        "framework_prompt": "Generate a professional executive summary following these EXACT structural patterns for ALL sections:\r\n\r\n## HEADER Requirements (MANDATORY):\r\n- Company name must be actual client company from transcript\r\n- Always include \"Estimated Read Time: 2 minutes\"\r\n\r\n## CURRENT STATE CHALLENGE Structure (MANDATORY):\r\nWrite exactly TWO sentences that:\r\n1. Frame the absence of action as a critical threat\r\n2. Use strong, urgent executive language\r\n3. Focus on business impact: employee morale, retention risk, operational inefficiencies, financial exposure\r\n\r\nExamples from client samples:\r\n- \"Ballard's current recognition programs rely heavily on manual HR processes... Without modernization, the organization risks declining employee engagement...\"\r\n- \"Finwave's existing security infrastructure creates dangerous visibility gaps... With a lean six-person security team manually correlating alerts...\"\r\n\r\n## PROPOSED SOLUTION Structure (MANDATORY):\r\nWrite exactly TWO sentences that:\r\n1. Highlight the high-value strategic opportunity\r\n2. Focus on business outcomes: boosting retention, operational agility, cultural cohesion, competitive advantage\r\n\r\nExamples from client samples:\r\n- \"Implementing Terryberry's integrated employee engagement platform creates a strategic opportunity to transform recognition...\"\r\n- \"Implementing SentraCore's Zero Trust platform will transform Finwave's security posture from reactive threat hunting...\"\r\n\r\n## KEY BUSINESS OUTCOMES Structure (MANDATORY):\r\nCreate a table with exactly 3 metrics following this pattern:\r\n\r\n| Objective | Current State | Target Outcome by [Timeline] |\r\n|-----------|---------------|-------------------------------|\r\n| [Specific metric like \"Revenue Retention\"] | [Current % or figure] | [Target % or figure] |\r\n| [Specific metric like \"Churn Reduction\"] | [Current %] | [Target %] |\r\n| [Strategic KPI like \"Operational Agility\"] | [Baseline description] | [Future-ready goal] |\r\n\r\n## COST OF STATUS QUO Structure (MANDATORY):\r\nFollow this EXACT sentence pattern:\r\n\"{{time_period}}, {{affected_reach}} are impacted by {{problem_description}}, costing {{cost_impact}}. Without intervention by {{intervention_timeline}}, {{worsening_outcome}}.\"\r\n\r\nExamples from client samples:\r\n- \"Every quarter, Ballard's Total Rewards team manually processes service awards... consuming significant HR bandwidth...\"\r\n- \"Every month, Finwave's security team invests dozens of hours manually chasing non-actionable alerts...\"\r\n\r\n### JSON Field Mapping for Cost of Status Quo:\r\n- **time_period**: \"Every quarter\", \"Every month\", etc.\r\n- **affected_reach**: \"hundreds of employees\", \"the security team\", \"1,200 employees\", etc.\r\n- **problem_description**: Core problem causing the cost\r\n- **cost_impact**: Financial or operational cost description\r\n- **intervention_timeline**: When action must be taken (e.g., \"Q4 2025\")\r\n- **worsening_outcome**: What will happen if no action is taken\r\n\r\n## INVESTMENT Structure (MANDATORY):\r\nMust include:\r\n- **Budget Range**: Clear budget figures or ranges\r\n- **Implementation Timeline**: Start Date → End Date format\r\n- **Key Stakeholders**: List 3-5 specific roles and names from transcript\r\n\r\n## Content Requirements:\r\n- **Executive tone only**: C-level language, no technical jargon\r\n- **Strategic emphasis**: Bold only for high-priority items\r\n- **Urgent but professional**: Create decision urgency without drama\r\n- **Specific numbers**: Use actual figures from transcript\r\n- **Decision-ready**: Content must support immediate executive decision-making\r\n\r\n## Critical Structural Words (MUST INCLUDE):\r\n- \"Without intervention by\" in Cost of Status Quo\r\n- \"are impacted by\" in Cost of Status Quo\r\n- \"costing\" in Cost of Status Quo\r\n- Use company-specific names and platforms mentioned in transcript\r\n\r\n## Professional Language Patterns:\r\n- Use phrases like \"critical threat\", \"strategic opportunity\", \"operational inefficiencies\"\r\n- Reference specific stakeholders and decision-makers by name and role\r\n- Connect all outcomes to business resilience and competitive advantage\r\n- Include actual budget figures and timelines discussed\r\n\r\nGenerate only valid JSON following the ExecutiveSummaryReport schema. Fill each field with substantive, transcript-specific content that follows these structural requirements.\r\n\r\nFocus on creating an executive summary that C-level executives can read in under 2 minutes and make immediate decisions upon."
+    }
+},
+{
+    "model": "report_management.reporttemplate",
+    "pk": 4,
+    "fields": {
+        "key": "sales_performance_report",
+        "title": "Sales Performance Coach",
+        "description": "Sales Performance Coach",
+        "json_schema": null,
+        "created_at": "2025-08-06T11:39:51.911Z",
+        "is_pinned": false,
+        "last_used": null,
+        "usage_count": 0,
+        "category": 1,
+        "framework_prompt": "You are a rigorous SaaS sales coach. Your audience is a VP of Sales who wants brutal, tactical feedback on their rep's call performance — with emphasis on risk, intent signals, and coachability.\r\n\r\nGenerate a comprehensive sales performance evaluation following these EXACT structural patterns:\r\n\r\n## SCORING STANDARDS (MANDATORY - BE RUTHLESS):\r\n- **6 = Acceptable** (basic competency, nothing special)\r\n- **8 = Elite** (strong performance, clear skill)\r\n- **10 = Rare Excellence** (perfection, only for truly exceptional moments)\r\n- **NO FREE POINTS** - Be severe when needed, only reward clear pipeline advancement\r\n\r\n## REP PERFORMANCE SCORECARD Structure (MANDATORY):\r\n\r\n### Must include exactly 5 sections in this order:\r\n1. **Opening & Discovery Effectiveness**\r\n2. **Objection Handling & Responsiveness** \r\n3. **Call Structure & Clarity**\r\n4. **Trust Building & Solution Alignment**\r\n5. **Call-to-Action Strength**\r\n\r\n### Each section MUST have exactly 4 bullet points in this order:\r\n- **Bullet 1**: Best observation (what worked well)\r\n- **Bullet 2**: Second-best observation or behavior (what worked)\r\n- **Bullet 3**: Third strength or neutral comment\r\n- **Bullet 4**: Improvement opportunity starting with \"Could have...\" or \"Should have...\"\r\n (NOTE: Must Add real sentence example from transcript in parenthesis in 1-2 bullet points in format (e.g: \"Real reference sentence from transcript\"))\r\n\r\n### Scoring Guidelines for Each Section:\r\n- **Opening & Discovery**: Did rep open with warmth, set agenda, ask open-ended questions, uncover economic pain?\r\n- **Objection Handling**: Did buyer raise objections? Did rep listen, acknowledge, resolve with clarity?\r\n- **Call Structure**: Logical flow (agenda → pain → solution → next steps), clear benefit mapping?\r\n- **Trust Building**: Differentiated value articulation, solution alignment to pain points, partnership feeling?\r\n- **Call-to-Action**: Clear time-bound CTA, buyer commitment to next steps, urgency without pushiness?\r\n\r\n## OVERALL CALL SCORE Structure (MANDATORY):\r\n- **Calculate average** of all 5 section scores\r\n- **Apply performance tag**:\r\n  - 0-4: \"Below Average — Needs Intervention\"\r\n  - 5-6: \"Average — Needs Improvement\" \r\n  - 7-8: \"Good — Strong Foundation\"\r\n  - 9-10: \"Elite — High-Performer Call\"\r\n\r\n## COACHING FEEDBACK Structure (MANDATORY):\r\nWrite 2-3 sentences addressed **directly to the rep by name**:\r\n- **Start with praise** on what they did well (tone, prep, specific behavior)\r\n- **Surface biggest improvement opportunity** (be specific and actionable)\r\n- **Close with next-step recommendation** (concrete action for next call)\r\n- **Tone**: Tough-love coaching for high-performing AE who wants to get better\r\n\r\n## VP INSIGHTS & FORECAST IMPACT Structure (MANDATORY):\r\n\r\n### Buyer Intent Signals (2-4 bullets):\r\n- Evidence of active evaluation vs browsing\r\n- Buying stage indicators, competitor mentions, urgency signals\r\n- Smart questions, engagement level, commitment signals\r\n\r\n### Deal Risk Factors (2-4 bullets):\r\n- Pipeline-blocking gaps: no budget, no decision maker, vague timeline\r\n- Technical/integration concerns, competitive threats\r\n- Missing qualification elements\r\n\r\n\r\n### Rep Coachability (2-3 bullets):\r\n- Rep's strengths and biggest coaching opportunity\r\n- Is this skill issue, mindset issue, or prep issue?\r\n- Pattern vs one-off performance assessment\r\n\r\n\r\n\r\n### Pipeline Forecast Impact (1 recommendation):\r\nChoose ONE with justification:\r\n- **\"Remove from Forecast\"** - Not qualified, no real intent\r\n- **\"Move to Best Case\"** - Intent but missing key elements\r\n- **\"Keep in Forecast – Medium Confidence\"** - Progressing but risks remain\r\n- **\"Commit\"** - Strong qualification and deal motion\r\n\r\n## Content Requirements:\r\n- **Extract rep name** from transcript and address them directly throughout coaching\r\n- **Be brutally candid** - Zero fluff, concrete buyer evidence\r\n- **Focus on pipeline impact** - Will this deal close? Why or why not?\r\n- **Identify specific behaviors** - What exactly did rep do well/poorly?\r\n- **Provide actionable coaching** - What should they do differently next time?\r\n\r\n## Critical Language Patterns:\r\n- Address rep by name: \"Zak, you did...\" NOT \"The rep did...\"\r\n- Use specific examples from transcript\r\n- Be decisive on forecast recommendations\r\n- Maintain high performance standards - only excellence earns 9-10\r\n- Focus on buyer evidence, not rep effort\r\n\r\n## Tone Requirements:\r\n- **Brutally honest** but constructive\r\n- **High standards** - assume rep is high-performing and can improve\r\n- **Results-focused** - prioritize accuracy over optimism\r\n- **Crisp and direct** - no fluff or politeness padding\r\n- **VP-level language** - strategic, tactical, bottom-line focused\r\n\r\nGenerate only valid JSON following the SalesPerformanceCoachReport schema. Fill each field with substantive, transcript-specific content that provides actionable coaching and accurate pipeline assessment.\r\n\r\nBe ruthless with scoring. Only reward clear excellence. Push for precision over politeness."
+    }
+},
+{
+    "model": "report_management.reporttemplate",
+    "pk": 5,
+    "fields": {
+        "key": "mutual_action_plan",
+        "title": "Mutual Action Plan",
+        "description": "Mutual Action Plan",
+        "json_schema": null,
+        "created_at": "2025-08-06T15:00:52.811Z",
+        "is_pinned": false,
+        "last_used": null,
+        "usage_count": 0,
+        "category": 1,
+        "framework_prompt": "You are a strategic deal support assistant for a B2B SaaS team.  \r\nYour job is to extract a **Mutual Action Plan** from a sales call transcript.  \r\nUse only real buyer signals to define shared milestones, goals, success metrics, stakeholders, and timeline pressures.  \r\n\r\nWrite like a high-performing AE working with a proactive champion who wants the deal to move fast and cleanly.  \r\nThis MAP will be shared with executives — keep it sharp, structured, and grounded in truth.  \r\nFollow this structure section-by-section, and never generate generic placeholders or invented data.\r\n\r\n---\r\n\r\n## HEADER (MANDATORY)\r\n\r\n- Extract **Client company name**\r\n- Extract **Champion(s) and co-collaborators** (only use names mentioned in the transcript)\r\n- Use the following opening statement:\r\n\r\n  > “Built in collaboration with [Champion Name(s)] to align stakeholders, accelerate progress, and achieve defined success milestones.”\r\n\r\n---\r\n\r\n## GOALS & TIMELINE (MANDATORY)\r\n\r\n- Extract 2–3 **outcome-based goals** tied to measurable business value\r\n- If a timeline or date is mentioned, extract and format as a `Target:` line  \r\n  (e.g., \"Go-live before Q4 to align with budget finalization\")\r\n\r\n\r\n---\r\n\r\n## KEY MILESTONES & DECISION POINTS (MANDATORY)\r\n\r\n- Extract 5–12 **tangible milestones or decisions** with:\r\n  - label (real wording from transcript)\r\n  - start_date (YYYY-MM-DD)\r\n  - end_date (YYYY-MM-DD)\r\n  - owner: \"Us\", \"Customer\", or \"Shared\"\r\n  - status: \"To Do\", \"In Progress\", \"Complete\", \"Planned\"\r\n\r\n- Use dates that reflect sequencing or urgency based on discussion\r\n- Do not invent steps — base everything on actual statements\r\n\r\n\r\n---\r\n\r\n## DECISION CRITERIA ALIGNMENT (MANDATORY)\r\n\r\n- Extract 4–6 **real buying criteria** stakeholders need to approve\r\n- Reflect transcript emphasis on ROI, compliance, integrations, usability, etc.\r\n- Rephrase for clarity but stay grounded in what was actually said\r\n\r\n\r\n---\r\n\r\n## INTERNAL SPONSORSHIP VIEW (MANDATORY)\r\n\r\n- Write a **paragraph** describing:\r\n  - Who the champion is and their role\r\n  - What they care about / their KPIs\r\n  - How they define success\r\n  - Any internal praise, pressure, or strategic motive\r\n  - Mention any other supporters/sponsors\r\n\r\n\r\n\r\n---\r\n\r\n## FINAL SIGN-OFF PLAN (MANDATORY)\r\n\r\n- Extract or infer dates (if said) for:\r\n  - final_business_case_review\r\n  - contract_signature_target\r\n  - launch_go_live\r\n\r\n- Also extract names of **co-owners** (Champion + AE/Rep)\r\n\r\n\r\n\r\n---\r\n\r\n## GENERAL CONTENT RULES\r\n\r\n- Use **only real buyer/client signals** — no placeholders or invented goals\r\n- Use **executive-level language**\r\n- Keep bullets, paragraphs, and timelines tightly scoped\r\n- If something is truly missing from transcript, use:\r\n  > `\"Not specified\"` and flag for manual review\r\n- Do not collapse sections or merge outputs\r\n- All content must match the required JSON schema exactly\r\n\r\n---\r\n\r\n## CRITICAL PATTERNS TO ENFORCE\r\n\r\n- Opening line: “Built in collaboration with [Champion Name]…”\r\n- Milestones must be phrased based on transcript events, not generic labels\r\n- Dates should match urgency, sequencing, or buyer context\r\n- Decision criteria must reflect approval blockers or success signals\r\n- Final plan co-owners = Champion + AE (use real names only)"
+    }
+  ],
+  "skills_score": {
+    "section_name": "skills",
+    "raw_score": 27.929999999999996,
+    "weight": 0.35,
+    "weighted_score": 9.775499999999997,
+    "details": {
+      "required_skills": {
+        "total": 3,
+        "matched": 2,
+        "avg_score": 0.6333333333333333
+      },
+      "preferred_skills": {
+        "total": 5,
+        "matched": 0,
+        "avg_score": 0.0
+      },
+      "requirement_groups": {},
+      "skill_matches": [
+        {
+          "skill_name": "CAD software",
+          "job_requirement": {
+            "name": "CAD software",
+            "normalized": null,
+            "level": null,
+            "min_years": null,
+            "preferred_years": null,
+            "priority": "must_have",
+            "notes": "Proficiency in CAD software (SolidWorks, AutoCAD, CATIA, or Creo)"
+          },
+          "resume_skill": {
+            "name": "solidworks",
+            "level": null,
+            "years_experience": null,
+            "category": null
+          },
+          "match_score": 0.9,
+          "proficiency_score": 1.0,
+          "years_score": 1.0,
+          "recency_score": 1.0,
+          "final_score": 0.9,
+          "match_confidence": "high",
+          "evidence_sources": [
+            "Technical Skills: solidworks"
+          ],
+          "gap_reason": null,
+          "is_required": true,
+          "priority_weight": 1.0
+        },
+        {
+          "skill_name": "FEA tools",
+          "job_requirement": {
+            "name": "FEA tools",
+            "normalized": null,
+            "level": null,
+            "min_years": null,
+            "preferred_years": null,
+            "priority": "must_have",
+            "notes": "Familiarity with FEA tools (ANSYS, Abaqus) and simulation practices"
+          },
+          "resume_skill": {
+            "name": "FEA Tools",
+            "level": null,
+            "years_experience": null,
+            "category": null
+          },
+          "match_score": 1.0,
+          "proficiency_score": 1.0,
+          "years_score": 1.0,
+          "recency_score": 1.0,
+          "final_score": 1.0,
+          "match_confidence": "high",
+          "evidence_sources": [
+            "Technical Skills: FEA Tools"
+          ],
+          "gap_reason": null,
+          "is_required": true,
+          "priority_weight": 1.0
+        },
+        {
+          "skill_name": "manufacturing processes",
+          "job_requirement": {
+            "name": "manufacturing processes",
+            "normalized": null,
+            "level": null,
+            "min_years": null,
+            "preferred_years": null,
+            "priority": "must_have",
+            "notes": "Strong understanding of manufacturing processes (CNC machining, injection molding, sheet metal fabrication)"
+          },
+          "resume_skill": null,
+          "match_score": 0.0,
+          "proficiency_score": 0.0,
+          "years_score": 0.0,
+          "recency_score": 0.0,
+          "final_score": 0.0,
+          "match_confidence": "low",
+          "evidence_sources": [],
+          "gap_reason": "No manufacturing processes experience found in resume",
+          "is_required": true,
+          "priority_weight": 1.0
+        },
+        {
+          "skill_name": "thermodynamics",
+          "job_requirement": {
+            "name": "thermodynamics",
+            "normalized": null,
+            "level": null,
+            "min_years": null,
+            "preferred_years": null,
+            "priority": "nice_to_have",
+            "notes": null
+          },
+          "resume_skill": null,
+          "match_score": 0.0,
+          "proficiency_score": 0.0,
+          "years_score": 0.0,
+          "recency_score": 0.0,
+          "final_score": 0.0,
+          "match_confidence": "low",
+          "evidence_sources": [],
+          "gap_reason": "No thermodynamics experience found in resume",
+          "is_required": false,
+          "priority_weight": 0.3
+        },
+        {
+          "skill_name": "fluid mechanics",
+          "job_requirement": {
+            "name": "fluid mechanics",
+            "normalized": null,
+            "level": null,
+            "min_years": null,
+            "preferred_years": null,
+            "priority": "nice_to_have",
+            "notes": null
+          },
+          "resume_skill": null,
+          "match_score": 0.0,
+          "proficiency_score": 0.0,
+          "years_score": 0.0,
+          "recency_score": 0.0,
+          "final_score": 0.0,
+          "match_confidence": "low",
+          "evidence_sources": [],
+          "gap_reason": "No fluid mechanics experience found in resume",
+          "is_required": false,
+          "priority_weight": 0.3
+        },
+        {
+          "skill_name": "heat transfer",
+          "job_requirement": {
+            "name": "heat transfer",
+            "normalized": null,
+            "level": null,
+            "min_years": null,
+            "preferred_years": null,
+            "priority": "nice_to_have",
+            "notes": null
+          },
+          "resume_skill": null,
+          "match_score": 0.0,
+          "proficiency_score": 0.0,
+          "years_score": 0.0,
+          "recency_score": 0.0,
+          "final_score": 0.0,
+          "match_confidence": "low",
+          "evidence_sources": [],
+          "gap_reason": "No heat transfer experience found in resume",
+          "is_required": false,
+          "priority_weight": 0.3
+        },
+        {
+          "skill_name": "3D printing",
+          "job_requirement": {
+            "name": "3D printing",
+            "normalized": null,
+            "level": null,
+            "min_years": null,
+            "preferred_years": null,
+            "priority": "nice_to_have",
+            "notes": "Experience with 3D printing and rapid prototyping"
+          },
+          "resume_skill": null,
+          "match_score": 0.0,
+          "proficiency_score": 0.0,
+          "years_score": 0.0,
+          "recency_score": 0.0,
+          "final_score": 0.0,
+          "match_confidence": "low",
+          "evidence_sources": [],
+          "gap_reason": "No 3D printing experience found in resume",
+          "is_required": false,
+          "priority_weight": 0.3
+        },
+        {
+          "skill_name": "Project Management tools",
+          "job_requirement": {
+            "name": "Project Management tools",
+            "normalized": null,
+            "level": null,
+            "min_years": null,
+            "preferred_years": null,
+            "priority": "nice_to_have",
+            "notes": "Exposure to Project Management tools and Agile methodologies"
+          },
+          "resume_skill": null,
+          "match_score": 0.0,
+          "proficiency_score": 0.0,
+          "years_score": 0.0,
+          "recency_score": 0.0,
+          "final_score": 0.0,
+          "match_confidence": "low",
+          "evidence_sources": [],
+          "gap_reason": "No Project Management tools experience found in resume",
+          "is_required": false,
+          "priority_weight": 0.3
+        }
+      ]
+    },
+    "strengths": [
+      "FEA tools",
+      "CAD software"
+    ],
+    "gaps": [
+      "No manufacturing processes experience found in resume"
+    ],
+    "evidence": [
+      "Technical Skills: solidworks",
+      "Technical Skills: FEA Tools"
+    ],
+    "confidence": "low",
+    "data_completeness": 0.25
+  },
+  "experience_score": null,
+  "projects_score": null,
+  "education_score": null,
+  "top_strengths": [
+    "Meets or exceeds degree requirements",
+    "Excellent field of study alignment",
+    "Strong commitment to continuous learning",
+    "FEA tools",
+    "CAD software"
+  ],
+  "critical_gaps": [
+    "Limited career advancement shown",
+    "Relevance penalty applied: -70% due to industry/role mismatch",
+    "Limited diversity in impact areas",
+    "Limited leadership experience demonstrated",
+    "No manufacturing processes experience found in resume"
+  ],
+  "recommendations": [
+    "Address eligibility requirements before proceeding",
+    "Gain more relevant industry or role experience",
+    "Document quantified achievements and project outcomes"
+  ],
+  "risk_factors": [
+    "Does not meet basic eligibility requirements",
+    "Low skills match may impact performance",
+    "Low experience analysis match may impact performance"
+  ],
+  "skill_matches": [
+    {
+      "skill_name": "CAD software",
+      "job_requirement": {
+        "name": "CAD software",
+        "normalized": null,
+        "level": null,
+        "min_years": null,
+        "preferred_years": null,
+        "priority": "must_have",
+        "notes": "Proficiency in CAD software (SolidWorks, AutoCAD, CATIA, or Creo)"
+      },
+      "resume_skill": {
+        "name": "solidworks",
+        "level": null,
+        "years_experience": null,
+        "category": null
+      },
+      "match_score": 0.9,
+      "proficiency_score": 1.0,
+      "years_score": 1.0,
+      "recency_score": 1.0,
+      "final_score": 0.9,
+      "match_confidence": "high",
+      "evidence_sources": [
+        "Technical Skills: solidworks"
+      ],
+      "gap_reason": null,
+      "is_required": true,
+      "priority_weight": 1.0
+    },
+    {
+      "skill_name": "FEA tools",
+      "job_requirement": {
+        "name": "FEA tools",
+        "normalized": null,
+        "level": null,
+        "min_years": null,
+        "preferred_years": null,
+        "priority": "must_have",
+        "notes": "Familiarity with FEA tools (ANSYS, Abaqus) and simulation practices"
+      },
+      "resume_skill": {
+        "name": "FEA Tools",
+        "level": null,
+        "years_experience": null,
+        "category": null
+      },
+      "match_score": 1.0,
+      "proficiency_score": 1.0,
+      "years_score": 1.0,
+      "recency_score": 1.0,
+      "final_score": 1.0,
+      "match_confidence": "high",
+      "evidence_sources": [
+        "Technical Skills: FEA Tools"
+      ],
+      "gap_reason": null,
+      "is_required": true,
+      "priority_weight": 1.0
+    },
+    {
+      "skill_name": "manufacturing processes",
+      "job_requirement": {
+        "name": "manufacturing processes",
+        "normalized": null,
+        "level": null,
+        "min_years": null,
+        "preferred_years": null,
+        "priority": "must_have",
+        "notes": "Strong understanding of manufacturing processes (CNC machining, injection molding, sheet metal fabrication)"
+      },
+      "resume_skill": null,
+      "match_score": 0.0,
+      "proficiency_score": 0.0,
+      "years_score": 0.0,
+      "recency_score": 0.0,
+      "final_score": 0.0,
+      "match_confidence": "low",
+      "evidence_sources": [],
+      "gap_reason": "No manufacturing processes experience found in resume",
+      "is_required": true,
+      "priority_weight": 1.0
+    },
+    {
+      "skill_name": "thermodynamics",
+      "job_requirement": {
+        "name": "thermodynamics",
+        "normalized": null,
+        "level": null,
+        "min_years": null,
+        "preferred_years": null,
+        "priority": "nice_to_have",
+        "notes": null
+      },
+      "resume_skill": null,
+      "match_score": 0.0,
+      "proficiency_score": 0.0,
+      "years_score": 0.0,
+      "recency_score": 0.0,
+      "final_score": 0.0,
+      "match_confidence": "low",
+      "evidence_sources": [],
+      "gap_reason": "No thermodynamics experience found in resume",
+      "is_required": false,
+      "priority_weight": 0.3
+    },
+    {
+      "skill_name": "fluid mechanics",
+      "job_requirement": {
+        "name": "fluid mechanics",
+        "normalized": null,
+        "level": null,
+        "min_years": null,
+        "preferred_years": null,
+        "priority": "nice_to_have",
+        "notes": null
+      },
+      "resume_skill": null,
+      "match_score": 0.0,
+      "proficiency_score": 0.0,
+      "years_score": 0.0,
+      "recency_score": 0.0,
+      "final_score": 0.0,
+      "match_confidence": "low",
+      "evidence_sources": [],
+      "gap_reason": "No fluid mechanics experience found in resume",
+      "is_required": false,
+      "priority_weight": 0.3
+    },
+    {
+      "skill_name": "heat transfer",
+      "job_requirement": {
+        "name": "heat transfer",
+        "normalized": null,
+        "level": null,
+        "min_years": null,
+        "preferred_years": null,
+        "priority": "nice_to_have",
+        "notes": null
+      },
+      "resume_skill": null,
+      "match_score": 0.0,
+      "proficiency_score": 0.0,
+      "years_score": 0.0,
+      "recency_score": 0.0,
+      "final_score": 0.0,
+      "match_confidence": "low",
+      "evidence_sources": [],
+      "gap_reason": "No heat transfer experience found in resume",
+      "is_required": false,
+      "priority_weight": 0.3
+    },
+    {
+      "skill_name": "3D printing",
+      "job_requirement": {
+        "name": "3D printing",
+        "normalized": null,
+        "level": null,
+        "min_years": null,
+        "preferred_years": null,
+        "priority": "nice_to_have",
+        "notes": "Experience with 3D printing and rapid prototyping"
+      },
+      "resume_skill": null,
+      "match_score": 0.0,
+      "proficiency_score": 0.0,
+      "years_score": 0.0,
+      "recency_score": 0.0,
+      "final_score": 0.0,
+      "match_confidence": "low",
+      "evidence_sources": [],
+      "gap_reason": "No 3D printing experience found in resume",
+      "is_required": false,
+      "priority_weight": 0.3
+    },
+    {
+      "skill_name": "Project Management tools",
+      "job_requirement": {
+        "name": "Project Management tools",
+        "normalized": null,
+        "level": null,
+        "min_years": null,
+        "preferred_years": null,
+        "priority": "nice_to_have",
+        "notes": "Exposure to Project Management tools and Agile methodologies"
+      },
+      "resume_skill": null,
+      "match_score": 0.0,
+      "proficiency_score": 0.0,
+      "years_score": 0.0,
+      "recency_score": 0.0,
+      "final_score": 0.0,
+      "match_confidence": "low",
+      "evidence_sources": [],
+      "gap_reason": "No Project Management tools experience found in resume",
+      "is_required": false,
+      "priority_weight": 0.3
+    }
+  ],
+  "percentile_ranking": null,
+  "similar_candidates_count": null,
+  "evidence_trail": {
+    "eligibility": [
+      "location: Karachi, Pakistan",
+      "min_experience: 2.0+ years"
+    ],
+    "skills": [
+      "Technical Skills: solidworks",
+      "Technical Skills: FEA Tools"
+    ],
+    "experience": [],
+    "projects__impact": [
+      "TechNova Solutions: 12%"
+    ],
+    "education__certifications": [
+      "B.E. Mechanical Engineering from NED University of Engineering & Technology",
+      "Certified SolidWorks Associate (CSWA) (Dassault Systèmes)",
+      "Introduction to FEA using ANSYS (Coursera)"
+    ]
+  },
+  "data_quality_assessment": {
+    "skills": 0.25,
+    "experience_analysis": 0.6666666666666666,
+    "projects__impact": 0.4,
+    "education__certifications": 1.0,
+    "overall": 0.5791666666666666
+  },
+  "processing_notes": [],
+  "scoring_config": {
+    "section_weights": {
+      "skills": 0.35,
+      "tools": 0.15,
+      "experience": 0.2,
+      "projects": 0.15,
+      "education": 0.1,
+      "impact": 0.05
+    },
+    "gates_config": {
+      "work_authorization": true,
+      "location": true,
+      "min_experience": true,
+      "education": false,
+      "security_clearance": false,
+      "industry_role_relevance": true
+    },
+    "recency_decay_factor": 0.95,
+    "skill_priority_weights": {
+      "must_have": 1.0,
+      "strong_preference": 0.7,
+      "nice_to_have": 0.3
+    },
+    "role_family": null,
+    "industry": null,
+    "config_version": "1.0",
+    "created_by": null,
+    "created_at": "2025-10-08T12:09:06.742867"
+  }
+}

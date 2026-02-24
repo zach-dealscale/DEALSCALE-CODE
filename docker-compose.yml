@@ -1,0 +1,152 @@
+services:
+
+  web:
+    build: .
+    container_name: django_app
+    command: >
+      sh -c "
+      if [ \"$DEBUG\" = \"True\" ]; then
+        python manage.py runserver 0.0.0.0:8000;
+      else
+        uvicorn config.asgi:application --host 0.0.0.0 --port 8000 --workers 3 --timeout-keep-alive 300;
+      fi
+      "
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    depends_on:
+      mailhog:
+        condition: service_started
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8000/health"]
+      interval: 40s
+      timeout: 40s
+      retries: 5
+      start_period: 40s
+    restart: always
+    networks:
+      - app_network
+
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    container_name: nginx_server
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    depends_on:
+      web:
+        condition: service_healthy
+    restart: always
+    networks:
+      - app_network
+
+  db:
+    image: postgres:15
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "${DB_PORT}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 3s
+      timeout: 2s
+      retries: 5
+      start_period: 5s
+    restart: always
+    networks:
+      - app_network
+
+  redis:
+    image: redis:latest
+    container_name: redis_cache
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 2s
+      timeout: 2s
+      retries: 5
+      start_period: 5s
+    restart: always
+    networks:
+      - app_network
+
+  celery_worker:
+    build: .
+    container_name: celery_worker
+    command: celery -A config worker --loglevel=info
+    env_file:
+      - .env
+    depends_on:
+      redis:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    restart: always
+    networks:
+      - app_network
+
+  celery_beat:
+    build: .
+    container_name: celery_beat
+    command: celery -A config beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    env_file:
+      - .env
+    depends_on:
+      web:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    restart: always
+    networks:
+      - app_network
+
+  # Development utilities
+  mailhog:
+    image: mailhog/mailhog
+    container_name: mailhog_dev
+    ports:
+      - "1025:1025"  # SMTP server
+      - "8025:8025"  # Web UI (http://localhost:8025)
+    restart: unless-stopped
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:

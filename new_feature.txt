@@ -1,0 +1,299 @@
+TASK DOCUMENT: Core Multi-Tenant + Role Hierarchy (Company → Teams → Roles)
+🎯 Objective
+Build a multi-tenant + team-based role system that allows hierarchical visibility and control inside each company.
+ Each company can have multiple users with roles like Owner, VP/Admin, and Sales Rep, each having access only to data within their own company — and limited by their position in the hierarchy.
+
+🧱 Architecture Overview
+Entities:
+Company (Tenant)
+
+
+User (belongs to one company)
+
+
+Team (a group of users inside a company)
+
+
+Role (defines permissions and visibility)
+
+
+Hierarchy Mapping (who reports to whom)
+
+
+
+⚙️ 1. MODELS DESIGN
+Company Model
+class Company(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+    slug = models.SlugField(unique=True)
+    created_by = models.ForeignKey('users.User', on_delete=models.SET_NULL, null=True, related_name='companies_created')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+    def __str__(self):
+        return self.name
+
+
+Role Model (Company-Scoped)
+Roles should be flexible per company (e.g., “VP”, “Sales Manager”, “AE”, “SDR”).
+class Role(models.Model):
+    company = models.ForeignKey('Company', on_delete=models.CASCADE, related_name='roles')
+    name = models.CharField(max_length=100)
+    level = models.PositiveIntegerField(default=0)  # Lower number = higher authority
+    description = models.TextField(blank=True)
+
+
+    class Meta:
+        unique_together = ('company', 'name')
+        ordering = ['level']
+
+
+    def __str__(self):
+        return f"{self.company.name} - {self.name}"
+
+
+Team Model
+Allows grouping users within a company (e.g., “Enterprise Sales Team”).
+class Team(models.Model):
+    company = models.ForeignKey('Company', on_delete=models.CASCADE, related_name='teams')
+    name = models.CharField(max_length=255)
+    created_by = models.ForeignKey('users.User', on_delete=models.SET_NULL, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+    def __str__(self):
+        return f"{self.company.name} - {self.name}"
+
+
+User Model Extension
+Add company, role, team, and manager reference (hierarchy link).
+class User(AbstractUser):
+    company = models.ForeignKey('Company', on_delete=models.CASCADE, related_name='users', null=True, blank=True)
+    role = models.ForeignKey('Role', on_delete=models.SET_NULL, null=True, blank=True, related_name='users')
+    team = models.ForeignKey('Team', on_delete=models.SET_NULL, null=True, blank=True, related_name='members')
+    manager = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True, related_name='subordinates')
+
+
+    def get_hierarchy_users(self):
+        """Return all users under this user's management tree."""
+        subordinates = list(self.subordinates.all())
+        for sub in self.subordinates.all():
+            subordinates += sub.get_hierarchy_users()
+        return subordinates
+
+✅ This setup allows you to do:
+vp = request.user
+my_team_users = vp.get_hierarchy_users()
+
+
+🧩 2. SIGNUP FLOW (Company Creation)
+When a new user signs up:
+User provides company_name in the signup form.
+
+
+System creates a new Company.
+
+
+Default roles are created for that company (Owner, VP, Sales Rep).
+
+
+The user becomes:
+
+
+Company Owner
+
+
+Role = “Owner”
+
+
+No manager assigned
+
+
+def signup_view(request):
+    if request.method == "POST":
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            company_name = form.cleaned_data["company_name"]
+
+
+            company = Company.objects.create(name=company_name, created_by=user)
+            # Create default roles
+            owner_role = Role.objects.create(company=company, name="Owner", level=0)
+            vp_role = Role.objects.create(company=company, name="VP", level=1)
+            rep_role = Role.objects.create(company=company, name="Sales Rep", level=2)
+
+
+            user.company = company
+            user.role = owner_role
+            user.save()
+
+
+            messages.success(request, "Company and owner account created successfully!")
+            return redirect("login")
+
+
+🧰 3. DATA VISIBILITY LOGIC
+When querying deals, reports, or analytics, the visibility is based on:
+Role
+Can See
+Owner
+All company data
+VP/Admin
+Own data + subordinates (team) data
+Sales Rep
+Only own data
+
+Example: Restricting Querysets
+def get_queryset(self):
+    user = self.request.user
+    qs = Deal.objects.filter(company=user.company)
+
+
+    if user.role.name.lower() == "owner":
+        return qs
+    elif user.role.name.lower() == "vp":
+        subordinate_ids = [u.id for u in user.get_hierarchy_users()]
+        return qs.filter(created_by__in=[user.id] + subordinate_ids)
+    else:
+        return qs.filter(created_by=user)
+
+
+🧮 4. PERFORMANCE DASHBOARD LOGIC
+When a VP logs in:
+Fetch all users under them → user.get_hierarchy_users()
+
+
+Aggregate:
+
+
+Total deals created
+
+
+Win rate
+
+
+Revenue per rep
+
+
+Render results grouped by user/team
+
+
+When a Sales Rep logs in:
+Only fetch their own deals and performance.
+
+
+
+🧱 5. ROLE & TEAM MANAGEMENT (Owner-Level Only)
+Owner can:
+Create new roles within company
+
+
+Create new teams
+
+
+Assign users to teams
+
+
+Set reporting managers
+
+
+Example View
+@login_required
+def create_role(request):
+    if request.user.role.name != "Owner":
+        messages.error(request, "You are not authorized to create roles.")
+        return redirect("dashboard")
+
+
+    if request.method == "POST":
+        form = RoleForm(request.POST)
+        if form.is_valid():
+            role = form.save(commit=False)
+            role.company = request.user.company
+            role.save()
+            messages.success(request, "Role created successfully!")
+            return redirect("roles_list")
+
+
+🧩 6. TENANT-AWARE QUERY UTILITIES
+Central helper for scoping all models automatically.
+class TenantQuerySet(models.QuerySet):
+    def for_user(self, user):
+        return self.filter(company=user.company)
+
+Usage:
+Deal.objects.for_user(request.user)
+
+
+🧱 7. ADMIN PANEL SETUP
+Register Company, Team, and Role in Django Admin.
+
+
+Add list filters: company, role, manager.
+
+
+Configure search by user email, role, and team.
+
+
+
+🧭 8. FUTURE EXPANSION (After MVP)
+Feature
+Description
+🔒 Fine-grained permissions
+Hook into Django Permissions or django-guardian for per-model control
+📧 Invitation System
+Owner can invite users to company via email
+🏢 Company switching
+For superadmin support/debugging
+🧮 Role-based analytics
+Extend metrics per hierarchy (revenue by team, win rate by VP)
+🌐 Subdomain routing
+e.g., acme.transcripts.io via company slug
+
+
+✅ TASK CHECKLIST
+Step
+Task
+Owner
+Status
+1
+Create Company, Role, Team models
+Backend
+☐
+2
+Extend User with company, role, team, manager
+Backend
+☐
+3
+Implement company creation on signup
+Backend
+☐
+4
+Create default roles (Owner, VP, Sales Rep)
+Backend
+☐
+5
+Implement hierarchical visibility logic
+Backend
+☐
+6
+Implement role/team management UIs
+Frontend
+☐
+7
+Add tenant-aware query helper
+Backend
+☐
+8
+Update all queries in key models to use company scoping
+Backend
+☐
+9
+Test visibility rules for each role
+QA
+☐
+
+
+
+

@@ -1,0 +1,75 @@
+flowchart LR
+    %% Actors & UI
+    U[Citizen Web/App]\n(style: Minimal UI) -->|Submit request| INTAKE[Submit API]
+
+
+    %% Decision & Planning
+    INTAKE --> DA[Department Agent\n(Triage + Action Plan)]
+    DA -->|{urgency, category, plan}| RA[Router Agent\n(DeptEntity Matcher)]
+
+
+    %% Routing
+    RA -->|primary entity| CA[Communication Agent\n(Call / SMS / Email)]
+    RA --> ALT[Alternates (kept for display)]
+
+
+    %% Actions
+    CA -->|call/sms/email| DEPT[Department Entity\n(Hospital / PS / Fire)]
+    CA --> NSA[Next‑Steps Suggestions Agent]\n:::soft
+    NSA -->|Plain Urdu + English| U
+
+
+    %% Booking (optional for high/medium)
+    CA -->|if booking needed| BA[Booking Agent]
+    BA --> GCAL[(Google Calendar)]
+
+
+    %% Follow‑up loop
+    FU[Follow‑Up Agent\n(SLA Watchdog)] -->|retry/escalate| CA
+    FU -->|reminders| U
+
+
+    %% Persistence
+    subgraph DB[(PostgreSQL / SQLite)]
+    CR[CitizenRequest]
+    ALOG[ActionLog]
+    ASG[CitizenRequestAssignment]
+    ENT[DepartmentEntity]
+    end
+
+
+    INTAKE --> CR
+    DA --> ALOG
+    RA --> ASG
+    CA --> ALOG
+    BA --> ALOG
+    FU --> ALOG
+
+
+    %% External services (online path)
+    subgraph ONLINE[Online Services]
+    TW[Twilio Voice/SMS]
+    GMAPS[Google Maps (Geocoding)]
+    end
+
+
+    CA -.-> TW
+    RA -. optional .-> GMAPS
+
+
+    %% Degraded Mode sidecar
+    subgraph DEG[Degraded Mode]
+    RULES[Rule‑based Triage]\n(LLM off)
+    JSON[Preloaded City→Services JSON]
+    TPL[Copyable SMS/Email Templates]
+    HAV[Local Haversine Distance]
+    end
+
+
+    DA -. fallback .-> RULES
+    RA -. uses .-> JSON
+    RA -. uses .-> HAV
+    CA -. uses .-> TPL
+
+
+    classDef soft fill:#eef7ff,stroke:#7da7d9,stroke-width:1px;

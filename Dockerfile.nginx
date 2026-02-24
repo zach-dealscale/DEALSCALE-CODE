@@ -1,0 +1,9 @@
+# Use the official Nginx image as the base image
+FROM nginx:alpine
+
+# Copy the custom nginx.conf file into the container
+COPY ./nginx.conf /etc/nginx/nginx.conf
+
+# Expose port 80 to make the Nginx server available externally
+EXPOSE 80
+EXPOSE 443
